@@ -1,0 +1,42 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    -   id: trailing-whitespace
+    -   id: end-of-file-fixer
+    -   id: check-yaml
+    -   id: check-added-large-files
+
+-   repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
+        entry: cd model-deployment && pipenv run isort .
+
+-   repo: https://github.com/psf/black
+    rev: 22.6.0
+    hooks:
+      - id: black
+        language_version: python3.9
+        entry: cd model-deployment && pipenv run black .
+
+-   repo: local
+    hooks:
+      - id: pylint
+        name: pylint
+        entry: cd model-deployment && pylint
+        language: system
+        types: [python]
+
+-   repo: local
+    hooks:
+      - id: pytest
+        name: Check pytest unit tests pass
+        entry: cd model-deployment && pipenv run pytest tests/
+        pass_filenames: false
+        language: system
+        always_run: true
+        types: [python]
