@@ -1,0 +1,48 @@
+###
+### A complete description of a Prefect Deployment for flow 'bikeshare-rental-batch-score'
+###
+name: Model Scoring Deployment-stage
+description: Main python function that runs the script
+version: 32e87828ae4050f34e66f68dc1bb1a4e
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command:
+  - python
+  - -m
+  - prefect.engine
+  stream_output: true
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: bikeshare-rental-batch-score
+manifest_path: null
+storage:
+  bucket_path: prefect-flows-zoomcamp-project-scoring-stage/scoring-flows
+  aws_access_key_id: null
+  aws_secret_access_key: null
+  _is_anonymous: true
+  _block_document_name: anonymous-3191da87-10c1-46fe-96f0-292e79d2bce3
+  _block_document_id: a1b0d779-ad60-4d3b-a756-4efe52cfa700
+  _block_type_slug: s3
+path: null
+entrypoint: score.py:batch_score
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    date:
+      title: date
+      type: string
+      format: date-time
+  required: null
+  definitions: null

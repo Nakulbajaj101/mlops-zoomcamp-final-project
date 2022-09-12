@@ -1,0 +1,92 @@
+name: CD_DEPLOY
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'model-deployment/**'
+env:
+  AWS_DEFAULT_REGION: 'us-east-2'
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+jobs:
+  deploy-infra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v2
+      
+      - name: Setup terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+          terraform_version: 1.0.0
+          terraform_wrapper: false
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+      - name: TF plan-stage
+        id: tf-plan-stage
+        working-directory: './'
+        run: make plan_stage
+
+      - name: TF apply-stage
+        id: tf-apply-stage
+        working-directory: 'deploy'
+        if: ${{ steps.tf-plan-stage.outcome }} == 'success'
+        env:
+          ENVIRONMENT: "stage"
+        run: | 
+          echo "Initialing terraform"
+          terraform init -backend-config="key=mlops-zoomcamp-project-${{ env.ENVIRONMENT }}.tfstate" --reconfigure
+
+          echo "Running terraform apply" 
+          terraform apply -auto-approve -var-file="vars/${{ env.ENVIRONMENT }}.tfvars"
+
+      - name: TF plan-prod
+        id: tf-plan-prod
+        working-directory: './'
+        if: ${{ steps.tf-apply-stage.outcome }} == 'success'
+        run: make plan_prod
+
+      - name: TF apply-prod
+        id: tf-apply-prod
+        working-directory: 'deploy'
+        if: ${{ steps.tf-plan-prod.outcome }} == 'success'
+        env:
+          ENVIRONMENT: "prod"
+        run: | 
+          echo "Initialing terraform"
+          terraform init -backend-config="key=mlops-zoomcamp-project-${{ env.ENVIRONMENT }}.tfstate" --reconfigure
+
+          echo "Running terraform apply" 
+          terraform apply -auto-approve -var-file="vars/${{ env.ENVIRONMENT }}.tfvars"
+
+      - name: Setup Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Install dependencies
+        working-directory: './'
+        run: pip install pipenv==2022.8.5
+
+      - name: Deploy prefect flows stage
+        id: prefect-deploy-stage-flows
+        working-directory: './'
+        run: |
+        make create_monitoring_stage
+        make create_scoring_stage
+
+      - name: Deploy prefect flows prod
+        id: prefect-deploy-prod-flows
+        working-directory: './'
+        if: ${{ steps.prefect-deploy-stage-flows.outcome }} == 'success'
+        run: |
+        make create_monitoring_prod
+        make create_scoring_prod

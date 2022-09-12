@@ -1,0 +1,26 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+mlflow = "==1.28.0"
+xgboost = "==1.6.2"
+prefect = "==2.2.0"
+pyarrow = "==9.0.0"
+haversine = "==2.7.0"
+pandas = "==1.4.4"
+boto3 = "==1.24.66"
+psutil = "==5.9.1"
+s3fs = "==0.4.2"
+tqdm = "==4.64.1"
+scikit-learn = "==1.1.2"
+
+[dev-packages]
+pytest = "*"
+pylint = "==2.14.5"
+black = "==22.6.0"
+isort = "*"
+
+[requires]
+python_version = "3.9"

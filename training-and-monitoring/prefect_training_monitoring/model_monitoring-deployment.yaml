@@ -1,0 +1,48 @@
+###
+### A complete description of a Prefect Deployment for flow 'bikeshare_model_monitoring'
+###
+name: Model Monitoring Deployment
+description: Monitoring flow
+version: 8d75517e0bf107da1564830b784846aa
+# The work queue that will handle this deployment's runs
+work_queue_name: default
+tags: []
+parameters: {}
+schedule: null
+infra_overrides: {}
+infrastructure:
+  type: process
+  env: {}
+  labels: {}
+  name: null
+  command:
+  - python
+  - -m
+  - prefect.engine
+  stream_output: true
+
+###
+### DO NOT EDIT BELOW THIS LINE
+###
+flow_name: bikeshare_model_monitoring
+manifest_path: null
+storage:
+  bucket_path: prefect-flows-zoomcamp-project-model-stage/training-monitoring-flows
+  aws_access_key_id: null
+  aws_secret_access_key: null
+  _is_anonymous: true
+  _block_document_name: anonymous-0185af21-6aa1-44d8-bb02-58733655a1a2
+  _block_document_id: ab6a7a89-b833-46ad-a56d-567b27afa09c
+  _block_type_slug: s3
+path: null
+entrypoint: monitoring.py:model_monitoring
+parameter_openapi_schema:
+  title: Parameters
+  type: object
+  properties:
+    date:
+      title: date
+      type: string
+      format: date-time
+  required: null
+  definitions: null

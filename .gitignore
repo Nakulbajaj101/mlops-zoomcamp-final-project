@@ -1,0 +1,24 @@
+# Any datasets
+datasets/
+
+# Ipython checkpoint
+*.ipynb_checkpoints/*
+
+# Python cache
+__pycache__/
+
+# MacOS
+.DS_Store
+
+# Editors
+.vscode/
+
+# Database files
+*.db 
+
+# Any csvs or parquets
+*.csv
+*.parquet
+
+# Terraform code
+.terraform/
