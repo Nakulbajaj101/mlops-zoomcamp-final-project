@@ -1,5 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")"
+
 export BUCKET_NAME="bike-duration"
 export INPUT_FILE_PATTERN="s3://${BUCKET_NAME}/in/{year:04d}-{month:02d}.parquet"
 export OUTPUT_FILE_PATTERN="s3://${BUCKET_NAME}/out/{year:04d}-{month:02d}.parquet"
