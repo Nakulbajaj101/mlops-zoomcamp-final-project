@@ -13,9 +13,6 @@ __pycache__/
 # Editors
 .vscode/
 
-# Database files
-*.db 
-
 # Any csvs or parquets
 *.csv
 *.parquet
