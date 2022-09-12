@@ -1,7 +1,7 @@
 ###
 ### A complete description of a Prefect Deployment for flow 'bikeshare_model_training'
 ###
-name: Model Training Deployment
+name: Model Training Deployment-stage
 description: Running the pipeline
 version: b3d5bc426b5cfad7e44849f2bec68751
 # The work queue that will handle this deployment's runs
@@ -31,8 +31,8 @@ storage:
   aws_access_key_id: null
   aws_secret_access_key: null
   _is_anonymous: true
-  _block_document_name: anonymous-5d29723e-6711-474f-b0d0-c5fa8b3275b9
-  _block_document_id: d5275a80-8e57-49d3-a420-795142fea287
+  _block_document_name: anonymous-89507604-c7ca-4d32-a336-a93e56680489
+  _block_document_id: 35693248-963c-4853-b529-883c431ce1df
   _block_type_slug: s3
 path: null
 entrypoint: model_training.py:model_training
