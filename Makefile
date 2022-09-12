@@ -3,14 +3,14 @@ create_monitoring_stage: export ENVIRONMENT = stage
 
 # Creating deployment files stage
 create_monitoring_stage:
-	bash ./training-and-monitoring/prefect_training_monitoring/create_deployment.sh 
+	bash ./training-and-monitoring/prefect_training_monitoring/create_deployment.sh
 
 # Creating monitoring env variable stage
 create_monitoring_prod: export ENVIRONMENT = prod
 
 # Creating deployment files prod
 create_monitoring_prod:
-	bash ./training-and-monitoring/prefect_training_monitoring/create_deployment.sh 
+	bash ./training-and-monitoring/prefect_training_monitoring/create_deployment.sh
 
 # Creating deployment scoring stage
 create_scoring_stage: export ENVIRONMENT = stage
@@ -58,5 +58,5 @@ destroy_prod_local:
 
 # For local setup
 setup:
-	pipenv install --dev 
+	pip install -r requirements.txt
 	pre-commit install

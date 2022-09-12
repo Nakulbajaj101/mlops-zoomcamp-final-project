@@ -16,7 +16,7 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v2
-      
+
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -41,11 +41,11 @@ jobs:
         if: ${{ steps.tf-plan-stage.outcome }} == 'success'
         env:
           ENVIRONMENT: "stage"
-        run: | 
+        run: |
           echo "Initialing terraform"
           terraform init -backend-config="key=mlops-zoomcamp-project-${{ env.ENVIRONMENT }}.tfstate" --reconfigure
 
-          echo "Running terraform apply" 
+          echo "Running terraform apply"
           terraform apply -auto-approve -var-file="vars/${{ env.ENVIRONMENT }}.tfvars"
 
       - name: TF plan-prod
@@ -60,11 +60,11 @@ jobs:
         if: ${{ steps.tf-plan-prod.outcome }} == 'success'
         env:
           ENVIRONMENT: "prod"
-        run: | 
+        run: |
           echo "Initialing terraform"
           terraform init -backend-config="key=mlops-zoomcamp-project-${{ env.ENVIRONMENT }}.tfstate" --reconfigure
 
-          echo "Running terraform apply" 
+          echo "Running terraform apply"
           terraform apply -auto-approve -var-file="vars/${{ env.ENVIRONMENT }}.tfvars"
 
       - name: Setup Python 3.9
@@ -80,13 +80,19 @@ jobs:
         id: prefect-deploy-stage-flows
         working-directory: './'
         run: |
-        make create_monitoring_stage
-        make create_scoring_stage
+          echo "Creating monitoring prefect deployment on stage"
+          make create_monitoring_stage
+
+          echo "Creating scoring prefect deployment on stage"
+          make create_scoring_stage
 
       - name: Deploy prefect flows prod
         id: prefect-deploy-prod-flows
         working-directory: './'
         if: ${{ steps.prefect-deploy-stage-flows.outcome }} == 'success'
         run: |
-        make create_monitoring_prod
-        make create_scoring_prod
+          echo "Creating monitoring prefect deployment on prod"
+          make create_monitoring_prod
+
+          echo "Creating scoring prefect deployment on prod"
+          make create_scoring_prod
