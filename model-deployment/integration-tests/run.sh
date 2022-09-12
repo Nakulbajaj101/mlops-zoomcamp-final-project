@@ -1,5 +1,6 @@
 #!/bin/bash
 cd "$(dirname "$0")"
+
 export BUCKET_NAME="bike-duration"
 export INPUT_FILE_PATTERN="s3://${BUCKET_NAME}/in/{year:04d}-{month:02d}.parquet"
 export OUTPUT_FILE_PATTERN="s3://${BUCKET_NAME}/out/{year:04d}-{month:02d}.parquet"
@@ -25,7 +26,7 @@ aws --endpoint-url ${S3_ENDPOINT_URL} s3 mb s3://${BUCKET_NAME}
 
 # run integration tests
 echo "Running tests"
-python test_score.py 2022 05
+pipenv run python test_score.py 2022 05
 
 echo "Finishes tests"
 
