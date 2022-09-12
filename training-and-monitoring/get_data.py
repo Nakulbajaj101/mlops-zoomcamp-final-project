@@ -8,7 +8,7 @@ files = ["202201-capitalbikeshare-tripdata.zip",
          "202206-capitalbikeshare-tripdata.zip",
          "202207-capitalbikeshare-tripdata.zip"]
 
-destination_dir = "../datasets"
+destination_dir = "prefect_training_monitoring/datasets"
 print(f"Download files:")
 for file in files:
     download_data(destination_dir=destination_dir, filename=file)
